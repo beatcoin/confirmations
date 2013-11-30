@@ -43,7 +43,7 @@ http.createServer(app).listen(app.get('port'), function(){
 var io = socketIO.listen(8081);
 
 io.sockets.on('connection', function(socket) {
-    socket.on('yeah', function (data) {
-        console.log(data);
+    socket.on('search', function (data) {
+        console.log('data: ' + data);
     });
 });
