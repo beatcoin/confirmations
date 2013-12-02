@@ -28,7 +28,8 @@ function( Backbone, Communicator, IndexviewTmpl  ) {
 	onRender: function() {},
 	
 	handleSearch: function(event) {
-	    Communicator.mediator.trigger('APP:SEARCH_CLICKED');
+	    var query = this.$('#input-query').val();
+	    Communicator.mediator.trigger('APP:SEARCH_CLICKED', query);
 	}
     });
 

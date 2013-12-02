@@ -25,6 +25,24 @@ function( Backbone, Communicator, IO, FooterView, HeaderView, IndexView, Transac
 	App.addInitializer( function () {
 	    Communicator.mediator.trigger("APP:START");
 	    this.socket = IO.connect('http://localhost:8081');
+
+	    this.socket.on('success', function(data) {
+		console.log('success');
+		App.router.navigate('transaction', true);
+	    });
+
+	    this.socket.on('failure', function(data) {
+		console.log('failure');
+	    });
+
+	    this.socket.on('miss', function(data) {
+		console.log('miss');
+	    });
+
+	    this.socket.on('update', function(data) {
+		console.log('update');
+	    });
+
 	    this.router = new AppRouter.Router({
 		controller: AppRouter
 	    });
@@ -54,9 +72,11 @@ function( Backbone, Communicator, IO, FooterView, HeaderView, IndexView, Transac
 	    );
 	});
 
-	Communicator.mediator.on('APP:SEARCH_CLICKED', function() {
-	    App.socket.emit('search', { query: '2358f266eaef84f8a9b56768b38e9d5a74b23845ae3277ba70d7b7ebcbeffef1' });
-//	    App.router.navigate('transaction', true);
+	Communicator.mediator.on('APP:SEARCH_CLICKED', function(query) {
+	    var message = { '@class' : 'de.confirmations.pojo.Subscribe',
+                'room': query
+	    };
+	    App.socket.json.send(message);
 	});
 
 	return App;
